@@ -1,24 +1,26 @@
 package com.jchang.explorer.response.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
 public class Response<T> {
 
     private Integer code;
     private String message;
     private T result;
 
-    public Response(Code code) {
+    private Response(Code code) {
         this.code = code.code;
         this.message = code.message;
     }
 
     public Response(Integer code, T result) {
         this.code = code;
-        this.result = result;
-    }
-
-    public Response(Integer code, String message, T result) {
-        this.code = code;
-        this.message = message;
         this.result = result;
     }
 
@@ -29,30 +31,6 @@ public class Response<T> {
 
     public static Response failed() {
         return new Response(Code.FAILURE);
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getResult() {
-        return result;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
     }
 
     public enum Code {
