@@ -1,0 +1,136 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.7.RELEASE'
+        jacksonDatabind = '2.9.9.3'
+        lombokVersion = '1.18.4'
+        jooqVersion = '3.11.11'
+        web3jVersion = '4.5.0'
+        postgresVersion = '42.2.6'
+        flywayVersion = '6.0.1'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "org.jooq:jooq-codegen:$jooqVersion"
+        classpath 'nu.studer:gradle-jooq-plugin:3.0.3'
+        classpath 'org.postgresql:postgresql:42.2.6'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'io.franzbecker.gradle-lombok' version '2.1'
+    id 'nu.studer.jooq' version '3.0.3'
+}
+
+group = 'com.jchang'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-jooq',
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabind",
+            "org.projectlombok:lombok:$lombokVersion",
+            "org.jooq:jooq:$jooqVersion",
+            "org.web3j:core:$web3jVersion",
+            "org.postgresql:postgresql:$postgresVersion",
+            'org.flywaydb:flyway-core'
+
+    jooqRuntime 'postgresql:postgresql:9.1-901-1.jdbc4'
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion",
+            "org.springframework.security:spring-security-test"
+}
+
+// Jooq Code Gen
+//jooq {
+//    version = '3.12.0'
+//    edition = 'OSS'
+//    sample(sourceSets.main) {
+//        jdbc {
+//            driver = 'org.postgresql.Driver'
+//            url = 'jdbc:postgresql://localhost:5432/explorerdb'
+//            user = 'postgres'
+//            password = 'password'
+//        }
+//        generator {
+//            name = 'org.jooq.codegen.DefaultGenerator'
+//            strategy {
+//                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+//                // ...
+//            }
+//            database {
+//                name = 'org.jooq.meta.postgres.PostgresDatabase'
+//                inputSchema = 'public'
+//                forcedTypes {
+//                    forcedType {
+//                        name = 'varchar'
+//                        expression = '.*'
+//                        types = 'JSONB?'
+//                    }
+//                    forcedType {
+//                        name = 'varchar'
+//                        expression = '.*'
+//                        types = 'INET'
+//                    }
+//                }
+//                // ...
+//            }
+//            generate {
+//                relations = true
+//                deprecated = false
+//                records = true
+//                immutablePojos = true
+//                fluentSetters = true
+//                // ...
+//            }
+//            target {
+//                packageName = 'com.jchang.explorer.db'
+//                directory = 'src/main/java'
+//            }
+//        }
+//    }
+//}
+
+def writer = new StringWriter()
+def xml = new groovy.xml.MarkupBuilder(writer)
+        .configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd') {
+            jdbc() {
+                driver('org.postgresql.Driver')
+                url('jdbc:postgresql://localhost:5432/explorerdb')
+                user('postgres')
+                password('password')
+            }
+            generator {
+                database {
+                    schemata {
+                        schema {
+//                            inputSchema = 'public'
+                        }
+                    }
+                }
+                generate([:]) {
+                    pojos true
+                    daos true
+                }
+                target() {
+                    packageName('com.jchang.explorer.db')
+                    directory('src/main/java')
+                }
+            }
+        }
+
+//org.jooq.codegen.GenerationTool.generate(writer.toString())
