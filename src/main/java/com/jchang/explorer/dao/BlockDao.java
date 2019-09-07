@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import static com.jchang.explorer.dao.sql.BlockSqlStatements.MAX_BLOCK_NUMBER;
 import static com.jchang.explorer.db.tables.BlockTable.BLOCK_TABLE;
@@ -28,6 +30,7 @@ public class BlockDao {
         return results.stream()
                 .map(x -> x.getValue(MAX_BLOCK_NUMBER))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Database not in sync with Ethereum Node"));
     }
 }
