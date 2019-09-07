@@ -2,8 +2,8 @@ package com.jchang.explorer.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SelectQuery;
+import org.jooq.Record1;
+import org.jooq.Result;
 import org.springframework.stereotype.Component;
 
 import static com.jchang.explorer.dao.sql.BlockSqlStatements.MAX_BLOCK_NUMBER;
@@ -20,12 +20,12 @@ public class BlockDao {
     }
 
     public Long getLatestBlockNumber() {
-        SelectQuery<Record> query = sql.selectQuery();
-        query.addSelect(MAX_BLOCK_NUMBER);
-        query.addFrom(BLOCK_TABLE);
-        var fetch = query.fetch();
+        Result<Record1<Long>> results =
+                sql.select(MAX_BLOCK_NUMBER)
+                        .from(BLOCK_TABLE)
+                        .fetch();
 
-        return fetch.stream()
+        return results.stream()
                 .map(x -> x.getValue(MAX_BLOCK_NUMBER))
                 .findFirst()
                 .orElse(null);

@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+ethereum:
+  nodeEndpoint: "https://rinkeby.infura.io/"
+
+explorer:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/explorerdb
+    username: postgres
+    password: password
+    pool-size: 30
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: password
+    url: jdbc:postgresql://localhost:5432/explorerdb
+    username: postgres
+  jooq:
+    sql-dialect: POSTGRES_10
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    org.jooq: debug
