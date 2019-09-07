@@ -22,15 +22,9 @@ public class BlockController {
     }
 
     @GetMapping("/blocks")
-    public Response<BigInteger> blockCount() {
-        var ethBlockNumber = blockService.getEthBlockNumber();
-        return new Response<>(SUCCESS.getCode(), SUCCESS.getMessage(), ethBlockNumber.getBlockNumber());
-    }
-
-    @GetMapping("/blocks/accounts")
-    public Response<List<String>> ethAccountAccountById() {
-        var ethBlockNumber = blockService.getEthAccounts();
-        return new Response<>(SUCCESS.getCode(), SUCCESS.getMessage(), ethBlockNumber.getAccounts());
+    public Response<Long> latestBlockNumber() {
+        var ethBlockNumber = blockService.getLatestBlockNumber();
+        return new Response<>(SUCCESS.getCode(), SUCCESS.getMessage(), ethBlockNumber);
     }
 
 }

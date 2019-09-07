@@ -57,8 +57,6 @@ dependencies {
 
 // Jooq Code Gen
 //jooq {
-//    version = '3.12.0'
-//    edition = 'OSS'
 //    sample(sourceSets.main) {
 //        jdbc {
 //            driver = 'org.postgresql.Driver'
@@ -67,7 +65,9 @@ dependencies {
 //            password = 'password'
 //        }
 //        generator {
-//            name = 'org.jooq.codegen.DefaultGenerator'
+//            generate {
+//                javaTimeTypes = true
+//            }
 //            strategy {
 //                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
 //                // ...
@@ -75,21 +75,23 @@ dependencies {
 //            database {
 //                name = 'org.jooq.meta.postgres.PostgresDatabase'
 //                inputSchema = 'public'
-//                forcedTypes {
-//                    forcedType {
-//                        name = 'varchar'
-//                        expression = '.*'
-//                        types = 'JSONB?'
-//                    }
-//                    forcedType {
-//                        name = 'varchar'
-//                        expression = '.*'
-//                        types = 'INET'
-//                    }
-//                }
+//                excludes = 'unwantedDbTable'
+//                includeTables = true
+//                includeRoutines = false
+//                includePackages = true
+//                includePackageRoutines = true
+//                includePackageUDTs = true
+//                includePackageConstants = false
+//                includeUDTs = true
+//                includeSequences = false
+//                includePrimaryKeys = false
+//                includeUniqueKeys = false
+//                includeForeignKeys = false
+//                includeIndexes = false
 //                // ...
 //            }
 //            generate {
+//                daos = true
 //                relations = true
 //                deprecated = false
 //                records = true
@@ -104,6 +106,7 @@ dependencies {
 //        }
 //    }
 //}
+
 
 def writer = new StringWriter()
 def xml = new groovy.xml.MarkupBuilder(writer)
