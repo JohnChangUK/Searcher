@@ -1,11 +1,13 @@
 package com.jchang.explorer.dto;
 
+import com.jchang.explorer.constant.Constant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.web3j.protocol.core.methods.response.EthBlock;
 
 import java.util.Date;
 
@@ -33,4 +35,25 @@ public class BlockDto {
     private String stateRoot;
     private String receiptsRoot;
     private String transactionsRoot;
+
+    public static BlockDto buildBlock(EthBlock.Block ethBlock) {
+        return BlockDto.builder()
+                .number(ethBlock.getNumber().longValue())
+                .hash(ethBlock.getHash())
+                .timestamp(new Date(ethBlock.getTimestamp().longValue() * Constant.TimestampFactor))
+                .miner(ethBlock.getMiner())
+                .difficulty(ethBlock.getDifficulty().intValue())
+                .totalDifficulty(ethBlock.getTotalDifficulty().intValue())
+                .size(ethBlock.getSize().intValue())
+                .gasUsed(ethBlock.getGasUsed().intValue())
+                .gasLimit(ethBlock.getGasLimit().intValue())
+                .nonce(ethBlock.getNonceRaw())
+                .extraData(ethBlock.getExtraData())
+                .uncleHash(ethBlock.getSha3Uncles())
+                .parentHash(ethBlock.getParentHash())
+                .stateRoot(ethBlock.getStateRoot())
+                .receiptsRoot(ethBlock.getReceiptsRoot())
+                .transactionsRoot(ethBlock.getTransactionsRoot())
+                .build();
+    }
 }
