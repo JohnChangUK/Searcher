@@ -3,6 +3,7 @@ package com.jchang.explorer.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -14,7 +15,7 @@ public class JacksonConfig extends ObjectMapper {
 
     public JacksonConfig() {
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-        disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
-        setDateFormat(new SimpleDateFormat(dateTimeFormat));
+        configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        registerModule(new JavaTimeModule());
     }
 }
