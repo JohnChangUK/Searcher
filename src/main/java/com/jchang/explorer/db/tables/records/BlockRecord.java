@@ -8,9 +8,10 @@ import org.jooq.Row18;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
-public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Record18<Long, String, Timestamp, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> {
+public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Record18<Long, String, LocalDateTime, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> {
 
     private static final long serialVersionUID = 633424188;
 
@@ -45,15 +46,15 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
     /**
      * Setter for <code>public.block.timestamp</code>.
      */
-    public void setTimestamp(Timestamp value) {
+    public void setTimestamp(LocalDateTime value) {
         set(2, value);
     }
 
     /**
      * Getter for <code>public.block.timestamp</code>.
      */
-    public Timestamp getTimestamp() {
-        return (Timestamp) get(2);
+    public LocalDateTime getTimestamp() {
+        return (LocalDateTime) get(2);
     }
 
     /**
@@ -286,7 +287,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public Row18<Long, String, Timestamp, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> fieldsRow() {
+    public Row18<Long, String, LocalDateTime, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> fieldsRow() {
         return (Row18) super.fieldsRow();
     }
 
@@ -294,7 +295,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public Row18<Long, String, Timestamp, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> valuesRow() {
+    public Row18<Long, String, LocalDateTime, String, Long, Long, Integer, Integer, Integer, String, String, String, String, String, String, String, Timestamp, Timestamp> valuesRow() {
         return (Row18) super.valuesRow();
     }
 
@@ -318,7 +319,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public Field<Timestamp> field3() {
+    public Field<LocalDateTime> field3() {
         return BlockTable.BLOCK_TABLE.TIMESTAMP;
     }
 
@@ -462,7 +463,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public Timestamp component3() {
+    public LocalDateTime component3() {
         return getTimestamp();
     }
 
@@ -606,7 +607,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public Timestamp value3() {
+    public LocalDateTime value3() {
         return getTimestamp();
     }
 
@@ -752,7 +753,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public BlockRecord value3(Timestamp value) {
+    public BlockRecord value3(LocalDateTime value) {
         setTimestamp(value);
         return this;
     }
@@ -896,7 +897,7 @@ public class BlockRecord extends UpdatableRecordImpl<BlockRecord> implements Rec
      * {@inheritDoc}
      */
     @Override
-    public BlockRecord values(Long value1, String value2, Timestamp value3, String value4, Long value5, Long value6, Integer value7, Integer value8, Integer value9, String value10, String value11, String value12, String value13, String value14, String value15, String value16, Timestamp value17, Timestamp value18) {
+    public BlockRecord values(Long value1, String value2, LocalDateTime value3, String value4, Long value5, Long value6, Integer value7, Integer value8, Integer value9, String value10, String value11, String value12, String value13, String value14, String value15, String value16, Timestamp value17, Timestamp value18) {
         value1(value1);
         value2(value2);
         value3(value3);

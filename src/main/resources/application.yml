@@ -2,7 +2,7 @@ server:
   port: 8080
 
 ethereum:
-  nodeEndpoint: "https://rinkeby.infura.io/"
+  nodeEndpoint: "https://mainnet.infura.io/v3/a9b33d3f8dcc4622be29dbe08e07cd96"
 
 explorer:
   datasource:

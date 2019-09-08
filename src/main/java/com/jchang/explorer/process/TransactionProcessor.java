@@ -33,27 +33,4 @@ public class TransactionProcessor implements Processor {
     @Scheduled(fixedRate = 4000)
     public void process() {
     }
-
-    public Map<String, TransactionReceipt> updateTransactions(List<TransactionDto> transactions) {
-        Map<String, TransactionReceipt> transactionReceiptMap = new ConcurrentHashMap<>();
-        List<CompletableFuture> futures = new ArrayList<>();
-
-        transactions.forEach(transaction ->
-                futures.add(web3j.ethGetTransactionReceipt(transaction.getHash()).sendAsync()
-                        .thenApply(receipt -> {
-                            var transactionReceipt = receipt.getTransactionReceipt().get();
-                            transaction.setType(transactionReceipt.getContractAddress() == null ? 0 : 1);
-                            transaction.setGasUsed(transactionReceipt.getGasUsed().intValue());
-                            return transactionReceipt;
-                        })
-                        .thenAccept(receipt -> transactionReceiptMap.putIfAbsent(transaction.getHash(), receipt))));
-
-        try {
-            CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()])).get();
-        } catch (InterruptedException | ExecutionException e) {
-            log.error("Failed to update transactions: " + e.getMessage());
-        }
-
-        return transactionReceiptMap;
-    }
 }

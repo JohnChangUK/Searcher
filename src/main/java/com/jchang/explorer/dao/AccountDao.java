@@ -21,10 +21,12 @@ public class AccountDao {
 
     public void updateAccounts(List<AccountDto> accounts) {
         accounts.forEach(account ->
-                sql.insertInto(ACCOUNT_TABLE)
-                        .values(account.getHash(), account.getType(),
+                sql.insertInto(ACCOUNT_TABLE, ACCOUNT_TABLE.HASH, ACCOUNT_TABLE.TYPE,
+                        ACCOUNT_TABLE.BALANCE, ACCOUNT_TABLE.NONCE)
+                        .values(account.getHash(), (short) account.getType(),
                                 account.getBalance(), account.getNonce())
-                        .onDuplicateKeyUpdate()
+                        .onConflict(ACCOUNT_TABLE.HASH)
+                        .doUpdate()
                         .set(ACCOUNT_TABLE.BALANCE, account.getBalance())
                         .set(ACCOUNT_TABLE.NONCE, account.getNonce())
                         .execute());

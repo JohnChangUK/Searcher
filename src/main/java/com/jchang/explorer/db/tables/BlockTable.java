@@ -11,6 +11,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class BlockTable extends TableImpl<BlockRecord> {
 
@@ -42,7 +43,7 @@ public class BlockTable extends TableImpl<BlockRecord> {
     /**
      * The column <code>public.block.timestamp</code>.
      */
-    public final TableField<BlockRecord, Timestamp> TIMESTAMP = createField("timestamp", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<BlockRecord, LocalDateTime> TIMESTAMP = createField("timestamp", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.block.miner</code>.

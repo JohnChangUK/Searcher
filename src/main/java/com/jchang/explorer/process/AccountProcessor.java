@@ -38,45 +38,6 @@ public class AccountProcessor implements Processor {
     public void process() {
     }
 
-    List<AccountDto> getAllAddresses(List<AccountDto> accounts, Map<String, TransactionReceipt> transactionReceiptMap) {
-        Set<AccountDto> accountSet = transactionReceiptMap.values()
-                .stream()
-                .filter(Objects::nonNull)
-                .map(receipt -> AccountDto.builder()
-                        .hash(receipt.getContractAddress())
-                        .type(1)
-                        .build()).collect(Collectors.toSet());
 
-        accountSet.addAll(accounts);
-        return new ArrayList<>(accountSet);
-    }
 
-    void updateAccounts(List<AccountDto> accounts) {
-        List<CompletableFuture> futures = new ArrayList<>();
-
-        accounts.forEach(account -> {
-            futures.add(web3j.ethGetBalance(account.getHash(),
-                    DefaultBlockParameter.valueOf(Constant.LatestBlockNumberKey))
-                    .sendAsync()
-                    .thenAccept(balance ->
-                            account.setBalance(balance.getBalance()
-                                    .divide(Constant.GWeiFactor).longValue())));
-            futures.add(web3j
-                    .ethGetTransactionCount(account.getHash(),
-                            DefaultBlockParameter.valueOf(Constant.LatestBlockNumberKey))
-                    .sendAsync()
-                    .thenAccept(transactionCount ->
-                            account.setNonce(transactionCount.getTransactionCount().intValue())));
-        });
-
-        try {
-            CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()])).get();
-        } catch (InterruptedException | ExecutionException e) {
-            log.error("Failed to update accounts: " + e.getMessage());
-        }
-    }
-
-    void updateAccountsInDatabase(List<AccountDto> accounts) {
-        accountDao.updateAccounts(accounts);
-    }
 }

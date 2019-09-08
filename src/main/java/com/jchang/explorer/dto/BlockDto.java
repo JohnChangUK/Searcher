@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Builder
@@ -21,7 +24,7 @@ public class BlockDto {
 
     private long number;
     private String hash;
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private String miner;
     private long difficulty;
     private long totalDifficulty;
@@ -40,7 +43,7 @@ public class BlockDto {
         return BlockDto.builder()
                 .number(ethBlock.getNumber().longValue())
                 .hash(ethBlock.getHash())
-                .timestamp(new Date(ethBlock.getTimestamp().longValue() * Constant.TimestampFactor))
+                .timestamp(LocalDateTime.ofInstant(Instant.ofEpochMilli(ethBlock.getTimestamp().longValue() * Constant.TimestampFactor), ZoneId.systemDefault()))
                 .miner(ethBlock.getMiner())
                 .difficulty(ethBlock.getDifficulty().intValue())
                 .totalDifficulty(ethBlock.getTotalDifficulty().intValue())
