@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 public class Constant {
 
-    public static String CapAddress = "https://api.coinmarketcap.com/v1/ticker/ethereum/";
+    public static String COIN_MARKETCAP_API = "https://api.coinmarketcap.com/v1/ticker/";
 
     public static BigInteger GWeiFactor = BigInteger.valueOf(10).pow(9);
 
