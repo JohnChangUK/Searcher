@@ -7,27 +7,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
-public class MarketCap extends Response<MarketCap> {
+public class MarketCap {
 
     @JsonProperty("name")
     private String name;
     @JsonProperty("symbol")
     private String symbol;
     @JsonProperty("price_usd")
-    private String priceUsd;
+    private BigDecimal priceUsd;
     @JsonProperty("24h_volume_usd")
-    private String marketCapUsd;
+    private BigDecimal marketCapUsd;
     @JsonProperty("24_hour_percentage_change")
-    private String percentageChange24hour;
-
-    @Override
-    public void setResult(MarketCap result) {
-        super.setResult(result);
-    }
+    private BigDecimal percentageChange24hour;
+    private Date createdAt;
 }

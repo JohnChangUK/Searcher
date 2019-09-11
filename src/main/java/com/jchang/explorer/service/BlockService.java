@@ -2,6 +2,7 @@ package com.jchang.explorer.service;
 
 import com.jchang.explorer.dao.BlockDao;
 import com.jchang.explorer.dto.BlockDto;
+import com.jchang.explorer.pagination.PageIterator;
 import com.jchang.explorer.process.DatabaseSynchronizer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,19 @@ public class BlockService {
         }
 
         return blocks;
+    }
+
+    public PageIterator<BlockDto> listBlocks(int page, int pageSize, String miner) {
+        long blockCount = blockDao.getBlockCount();
+        PageIterator<BlockDto> pageIterator = PageIterator.create(page, pageSize, blockCount);
+        if (blockCount > 0) {
+            List<BlockDto> minerBlocks = blockDao.getMinerBlocks(
+                    pageIterator.getOffSet(), pageIterator.getPageSize(), miner);
+            if (minerBlocks != null) {
+                pageIterator.getResult().addAll(minerBlocks);
+            }
+        }
+        return pageIterator;
     }
 
     public Long getLatestBlockNumber() {

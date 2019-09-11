@@ -1,4 +1,4 @@
-package com.jchang.explorer.page;
+package com.jchang.explorer.pagination;
 
 import lombok.Getter;
 

@@ -1,6 +1,7 @@
 package com.jchang.explorer.api;
 
 import com.jchang.explorer.dto.BlockDto;
+import com.jchang.explorer.pagination.PageIterator;
 import com.jchang.explorer.response.model.Response;
 import com.jchang.explorer.service.BlockService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,6 +33,12 @@ public class BlockController {
     @GetMapping("/latest")
     public Response<List<BlockDto>> latestBlocks() {
         var latestBlocks = blockService.getLatestBlocks(1, 10);
+        return new Response<>(SUCCESS.getCode(), SUCCESS.getMessage(), latestBlocks);
+    }
+
+    @GetMapping("/block")
+    public Response<PageIterator<BlockDto>> getBlocks() {
+        var latestBlocks = blockService.listBlocks(1, 10, "0x05a56e2d52c817161883f50c441c3228cfe54d9f");
         return new Response<>(SUCCESS.getCode(), SUCCESS.getMessage(), latestBlocks);
     }
 

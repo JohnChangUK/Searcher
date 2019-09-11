@@ -59,4 +59,30 @@ public class BlockDto {
                 .transactionsRoot(ethBlock.getTransactionsRoot())
                 .build();
     }
+
+    public static BlockDto buildBlockDto(
+            Long aLong, String hash, LocalDateTime localDateTime,
+            String miner, Long difficulty, Long totalDifficulty, Integer size,
+            Integer gasUsed, Integer gasLimit, String nonce,
+            String extraData, String parentHash, String uncleHash, String stateRoot,
+            String receiptsRoot, String transactionsRoot) {
+        return BlockDto.builder()
+                .number(aLong)
+                .hash(hash)
+                .timestamp(localDateTime)
+                .miner(miner)
+                .difficulty(difficulty)
+                .totalDifficulty(totalDifficulty)
+                .size(size)
+                .gasUsed(gasUsed)
+                .gasLimit(gasLimit)
+                .nonce(nonce)
+                .extraData(extraData)
+                .parentHash(parentHash)
+                .uncleHash(uncleHash)
+                .stateRoot(stateRoot)
+                .receiptsRoot(receiptsRoot)
+                .transactionsRoot(transactionsRoot)
+                .build();
+    }
 }
