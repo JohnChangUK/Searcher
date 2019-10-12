@@ -1,14 +1,21 @@
 package com.jchang.explorer.service;
 
 import com.jchang.explorer.dao.BlockDao;
+import com.jchang.explorer.dao.TransactionDao;
 import com.jchang.explorer.dto.BlockDto;
+import com.jchang.explorer.dto.BlockTransactionCount;
 import com.jchang.explorer.pagination.PageIterator;
 import com.jchang.explorer.process.DatabaseSynchronizer;
+import com.jchang.explorer.response.model.Account;
+import com.jchang.explorer.response.model.Block;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -16,10 +23,13 @@ public class BlockService {
 
     private final DatabaseSynchronizer databaseSynchronizer;
     private final BlockDao blockDao;
+    private final TransactionDao transactionDao;
 
-    public BlockService(DatabaseSynchronizer databaseSynchronizer, BlockDao blockDao) {
+    public BlockService(DatabaseSynchronizer databaseSynchronizer, BlockDao blockDao,
+                        TransactionDao transactionDao) {
         this.databaseSynchronizer = databaseSynchronizer;
         this.blockDao = blockDao;
+        this.transactionDao = transactionDao;
     }
 
     public List<BlockDto> getLatestBlocks(int page, int pageSize) {
@@ -57,7 +67,31 @@ public class BlockService {
         return pageIterator;
     }
 
+    public List<Block> convertBlockDtoToResponse(List<BlockDto> blockDtos) {
+        return blockDtos.stream()
+                .map(dto -> Block.builder()
+                        .hash(dto.getHash())
+                        .height(dto.getNumber())
+                        .timestamp(dto.getTimestamp())
+                        .parentHash(dto.getParentHash())
+                        .miner(Account.builder().hash(dto.getMiner()).build())
+                        .currentTimestamp(LocalDateTime.now())
+                        .timeDiff(Duration.between(LocalDateTime.now(), dto.getTimestamp()).toHours())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     public Long getLatestBlockNumber() {
         return blockDao.getLatestBlockNumber();
+    }
+
+    public List<Long> getBlockNumbers(List<Block> blocks) {
+        return blocks.stream()
+                .map(Block::getHeight)
+                .collect(Collectors.toList());
+    }
+
+    public List<BlockTransactionCount> countTransactionInBlocks(List<Long> blockNumbers) {
+        return blockNumbers.isEmpty() ? new ArrayList<>() : transactionDao.countTxInBlocks(blockNumbers);
     }
 }

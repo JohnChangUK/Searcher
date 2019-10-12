@@ -1,6 +1,5 @@
 package com.jchang.explorer.dao;
 
-import com.jchang.explorer.db.tables.records.BlockRecord;
 import com.jchang.explorer.dto.BlockDto;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;

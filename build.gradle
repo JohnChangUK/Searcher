@@ -43,14 +43,14 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-webflux',
-//            'org.projectreactor:reactor-spring:1.0.1.RELEASE',
             'org.springframework.boot:spring-boot-starter-jooq',
             "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabind",
             "org.projectlombok:lombok:$lombokVersion",
             "org.jooq:jooq:$jooqVersion",
             "org.web3j:core:$web3jVersion",
             "org.postgresql:postgresql:$postgresVersion",
-            'org.flywaydb:flyway-core'
+            'org.flywaydb:flyway-core',
+            "joda-time:joda-time:2.10.3"
 
     jooqRuntime 'postgresql:postgresql:9.1-901-1.jdbc4'
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion",

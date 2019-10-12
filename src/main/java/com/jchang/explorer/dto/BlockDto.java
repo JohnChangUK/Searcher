@@ -1,18 +1,25 @@
 package com.jchang.explorer.dto;
 
 import com.jchang.explorer.constant.Constant;
+import com.jchang.explorer.response.model.Account;
+import com.jchang.explorer.response.model.Block;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.joda.time.LocalDate;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -61,13 +68,13 @@ public class BlockDto {
     }
 
     public static BlockDto buildBlockDto(
-            Long aLong, String hash, LocalDateTime localDateTime,
+            Long number, String hash, LocalDateTime localDateTime,
             String miner, Long difficulty, Long totalDifficulty, Integer size,
             Integer gasUsed, Integer gasLimit, String nonce,
             String extraData, String parentHash, String uncleHash, String stateRoot,
             String receiptsRoot, String transactionsRoot) {
         return BlockDto.builder()
-                .number(aLong)
+                .number(number)
                 .hash(hash)
                 .timestamp(localDateTime)
                 .miner(miner)
@@ -85,4 +92,27 @@ public class BlockDto {
                 .transactionsRoot(transactionsRoot)
                 .build();
     }
+
+    public static List<Block> blocksWithTxCount(
+            List<Block> blocks, List<BlockTransactionCount> blockTransactionCounts) {
+        Map<Long, Long> blockTxCounts = blockTransactionCounts.stream()
+                .collect(Collectors.toMap(BlockTransactionCount::getBlock, BlockTransactionCount::getCount));
+        for (var block : blocks) {
+            Long count = blockTxCounts.get(block.getHeight());
+            block.setTxnCnt(count == null ? 0 : count);
+        }
+        return blocks;
+    }
+
+    Function<BlockDto, Block> toBlockResponse = block ->
+            Block.builder()
+                    .hash(block.getHash())
+                    .height(block.getNumber())
+                    .timestamp(Date.from(block.getTimestamp().atZone(ZoneId.systemDefault()).toInstant()))
+                    .parentHash(block.getParentHash())
+                    .miner(Account.builder().hash(block.getMiner()).build())
+                    .gasLimit((long) block.gasLimit)
+                    .currentTimestamp(LocalDate.now().toDate())
+                    .timeDiff((LocalDate.now().toDate().getTime() - block.getTimestamp().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()) / Constant.TimestampFactor)
+                    .build();
 }
